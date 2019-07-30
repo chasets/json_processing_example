@@ -8,16 +8,22 @@
 import json
 import pandas as pd
 
-source_file = 'data/original.json'
-target_file = 'output/original.parquet'
 
 
 def test_original_counts():
+    source_file = 'data/original.json'
+    target_file = 'output/original.parquet'
     # ignore dup case for now
     expected_count = len(json.load(open(source_file))['records'])
     actual_count = len(pd.read_parquet(target_file))
     assert actual_count == expected_count
 
+
+def test_easy_set_of_duplicates():
+    target_file = 'output/dup_data1.json'
+    expected_count = 2
+    actual_count = len(pd.read_parquet(target_file))
+    assert actual_count == expected_count
 
 
 

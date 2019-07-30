@@ -63,11 +63,12 @@ It used to be difficult to manage python environments on a single machine for di
     - ~~compare parquet records written to json records read~~
 
 ### More data, including dups
-1. manually mock up data including dup timestamps 
-2. handle dups (sort so we control which dups are dropped; maintain portability to spark)
-3. what about partitioning? No need to overcomplicate without knowing more. Write up some notes, but don't assume partition structure.
+1. ~~manually mock up data including dup timestamps~~ 
+2. ~~handle dups (sort so we control which dups are dropped; maintain portability to spark)~~
 
-* add dup tests (both dataframe and separately for output files)
+Let's not do any partition handling. No need to overcomplicate without knowing more. Write up some notes, but don't assume partition structure.
+
+* ~~add dup tests~~ 
 
 ### Generative testing, add multiple file capability
 1. use Hypothesis for generative tests (property-based testing) 
