@@ -55,12 +55,12 @@ The solution should be high performant and should include unit tests.
 It used to be difficult to manage python environments on a single machine for different experimental configurations, and across developers to ensure consistency. `virtualenv` changed that and `conda` environments are an even easier way to handle experimentation and consistency. So, we'll start with a conda environment called `parquet_dev` with Python 3.7, pandas, etc. From there, let's use a local Zeppelin for spark, then (assuming the cost is cool) EMR cluster on AWS. 
 
 ### Initial features
-1. read json
-2. pandas dataframe
-3. write parquet
+1. ~~read json~~
+2. ~~pandas dataframe~~
+3. ~~write parquet~~
 
 * tests:
-    - compare parquet records written to json records read 
+    - ~~compare parquet records written to json records read~~
 
 ### More data, including dups
 1. manually mock up data including dup timestamps 
