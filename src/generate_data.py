@@ -27,8 +27,21 @@ def make_record(yyyy, mm, dd, number_of_days=1):
 
 def make_recs(num_recs_to_make, yyyy, mm, dd, number_of_days=1):
     recs = []
+    keys = {}
     for i in range(num_recs_to_make):
-        recs.append(make_record(yyyy, mm, dd, number_of_days=number_of_days))
+        rec = make_record(yyyy, mm, dd, number_of_days=number_of_days)
+        # if the number of days is low, there is a chance for a ts collision, so toss out ts that already exist
+        key = rec['ts']
+        while 1:
+            try:
+                keys[key]
+                # print("colliding on " + key)
+                rec = make_record(yyyy, mm, dd, number_of_days=number_of_days)
+                key = rec['ts']
+            except:
+                recs.append(rec)
+                keys[key] = 1
+                break
     return recs
 
 def add_dups_to_recs(recs, num_dups_to_add):
@@ -52,6 +65,7 @@ def add_dups_to_recs(recs, num_dups_to_add):
         if len(out_recs) >= total_out: break
 
     return out_recs[:total_out]
+
 
 def write_json(recs, filepath):
     json.dump({"records" : recs}, open(filepath, 'w'))

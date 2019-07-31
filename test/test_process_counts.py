@@ -5,10 +5,11 @@
 
 
 # TODO: move this to a pytest config; this method _requires_ that pytest be run from project root
-import sys, os 
+import sys, os, pytest 
 path = os.path.join(os.getcwd(), 'src')
 sys.path.append(path)
 import generate_data, json_to_parquet
+
 
 # TODO move all of the setup / tear down stuff to fixtures
 # TODO before fixtures, at least refactor setup and tear down here
@@ -61,10 +62,14 @@ def test_read_write_with_dups():
     os.remove(parquet_filepath)
 
 # TODO: parameterize this
+@pytest.mark.slow
 def test_read_write_with_dups_big():
     # set up the json data
-    original_recs = 200000
-    additional_recs = 250000
+    # 100k = 3 seconds
+    # 1m   =  31 seconds
+    # 10m  = 468 seconds
+    original_recs = 100000
+    additional_recs = 2500
     json_filepath = 'data/test_read_write_with_dups_big.json'   # TODO: assumptions here
     parquet_filepath = 'output/test_read_write_with_dups_big.parquet' 
     recs = generate_data.make_recs(original_recs, 2019, 8, 1, 365)
