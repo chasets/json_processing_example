@@ -26,8 +26,16 @@ def test_easy_set_of_duplicates():
     assert actual_count == expected_count
 
 
-
-
+def test_make_record():
+    import sys
+    sys.path.append('/Users/tchase_mac/chasets/examples/json_processing_example/src')
+    import generate_data
+    rec = generate_data.make_record(2019, 5, 1)
+    # rec should have 3 keys: id, data, ts
+    id = rec['id']
+    data = rec['data']
+    ts = rec['ts']
+    assert 1 == 1
 
 
 

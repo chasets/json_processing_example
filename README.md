@@ -71,7 +71,7 @@ Let's not do any partition handling. No need to overcomplicate without knowing m
 * ~~add dup tests~~ 
 
 ### Generative testing, add multiple file capability
-1. use Hypothesis for generative tests (property-based testing) 
+1. ~~functions to generate test data~~ 
 2. make command line util for generating test files
 3. generate a bunch of data
 4. expand to use multiple files
@@ -79,6 +79,7 @@ Let's not do any partition handling. No need to overcomplicate without knowing m
 6. how much data can we get in a 10 or 20 minute run
 
 * tests for multiple files, analysis for dups to expect, update dup tests
+* add pandasql for testing the expected state 
 
 ### Abstract and move to local Spark
 1. abstraction filesystem input

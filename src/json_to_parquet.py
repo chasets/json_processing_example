@@ -1,5 +1,6 @@
 # Author: Tim Chase
 # Date:   July 30, 2019
+# Name:   json_to_parquet.py
 # Desc:   Convert json input files to parquet. See https://github.com/chasets/json_processing_example
 
 import json
@@ -7,9 +8,6 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-
-source = 'data/dup_data1.json'
-target = 'output/dup_data1.json'
 
 
 def read_json(filename):
@@ -33,9 +31,12 @@ def remove_duplicates(df):
     df.reset_index(drop=True, inplace=True)
     return df
 
-json_df = read_json(source)
-dedup_df = remove_duplicates(json_df)
-write_parquet(dedup_df, target)
+if __name__ == '__main__':
+    source = 'data/dup_data1.json'
+    target = 'output/dup_data1.json'
+    json_df = read_json(source)
+    dedup_df = remove_duplicates(json_df)
+    write_parquet(dedup_df, target)
 
 
 
