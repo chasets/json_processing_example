@@ -87,7 +87,7 @@ Below, I'll give instructions for using the files in this repository and I'll li
 * **main** - in order to support both using this file as a library (as in the [tests](https://github.com/chasets/json_processing_example/tree/master/test)) and from the command line, all of the [argparse](doc/command_line.md) features are here.
 
 ### Timing
-Below is the timing for the largest set that I tested, fifty million json records (5,000 records in 1,000) files. I ran batches of ten million several times with timing at about 20 minutes. So, xxx for fifty million seems right. 
+Below is the timing for the largest set that I tested, fifty million json records (5,000 records in 1,000) files. I ran batches of ten million several times with timing at about 30 minutes. 
 
 These were run on a Macbook Air.
 ```
@@ -100,11 +100,13 @@ Memory: 8 GB 1600 MHz DDR3
 ```
 real	36m20.717s
 user	20m28.212s
-sys	4m32.780s
+sys	    4m32.780s
 ```
 `time python src/json_to_parquet.py data/fifty_million_test output fifty_million_test.parquet`
 ```
-
+real	177m15.436s
+user	14m49.299s
+sys	    43m6.920s
 ```
 
 ### Testing
