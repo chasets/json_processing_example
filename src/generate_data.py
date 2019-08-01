@@ -92,8 +92,8 @@ if __name__ == '__main__':
     parser.add_argument("number_of_recs_per_file", help="the number of records total in all data files", type=int)
     parser.add_argument("number_of_files", help="the number of files (max of 9999) ", type=int)
     parser.add_argument("date", help="the date for the ts value as yyyymmdd")
-    parser.add_argument("-x", "--number_of_additional_duplicates", help="the number of duplicates to include in addition to number-of-recs", default=0)
-    parser.add_argument("-nd", "--number_of_days", help="the number of days in the future to include in possible ts values (default 1 - same day as date", default=1)
+    parser.add_argument("-x", "--number_of_additional_duplicates", help="the number of duplicates to include in addition to number-of-recs", type=int, default=0)
+    parser.add_argument("-nd", "--number_of_days", help="the number of days in the future to include in possible ts values (default 1 - same day as date", type=int, default=1)
     args = parser.parse_args()
 
     if args.directory:
