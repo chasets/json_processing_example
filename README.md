@@ -71,9 +71,9 @@ Below, I'll give instructions for using the files in this repository and I'll li
 * Process this data with `python src/json_to_parquet.py data/test0 output test0.parquet`. See additional documentation by executing `python src/json_to_parquet.py -h` and additional usage in [test/](https://github.com/chasets/json_processing_example/tree/master/test). 
 
 ### [json_to_parquet.py](https://github.com/chasets/json_processing_example/blob/master/src/json_to_parquet.py)
-* [pandas](https://pandas.pydata.org/) does a lot of the heavy lifting here. This allows for rapid development and provides a path forward to [platform portability](doc/platform_expansion_plan.md).
+* [pandas](https://pandas.pydata.org/) does a lot of the heavy lifting here. This allows for rapid development and provides a path forward to [platform portability](doc/expansion_plan.md).
 * **read_json** - read the data file into a pandas DataFrame.
-* **write_parquet** - after processing write the output data with some options to ease the [path forward](doc/platform_expansion_plan).
+* **write_parquet** - after processing write the output data with some options to ease the [path forward](doc/expansion_plan).
 * **remove_duplicates** - very straight-forward due to pandas. See the inline comment for my understanding of the business logic here. 
 * **process_multiple_files** - process all of the json files in a given directory, writing a single, de-duped parquet output.
 * **main** - in order to support both using this file as a library (as in the [tests](https://github.com/chasets/json_processing_example/tree/master/test)) and from the command line, all of the [argparse](doc/command_line.md) features are here.
@@ -117,6 +117,8 @@ The tests all build their own input data and clean up after themselves. Several 
 
 The [command line tests](https://github.com/chasets/json_processing_example/blob/master/test/test_command_line.py) can fail with messages that write to `stdout`, which is normally suppressed by pytest. In order to see `stdout`, invoke pytest like this:
 `pytest -s -m "not slow"`
+
+If a test fails, you might need to manually clean up data folders. If you get a `FileExistsError` on a subsequent test, this is almost always from failing to clean up from a previous test. 
 
 ## Development progress 
 
