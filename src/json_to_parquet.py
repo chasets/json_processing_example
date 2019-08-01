@@ -8,6 +8,9 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+import argparse, os
+
+
 
 
 def read_json(filename):
@@ -31,12 +34,26 @@ def remove_duplicates(df):
     df.reset_index(drop=True, inplace=True)
     return df
 
-if __name__ == '__main__':
-    source = 'data/dup_data1.json'
-    target = 'output/dup_data1.json'
-    json_df = read_json(source)
+def process_multiple_files(source_dir, target_file):
+    files = os.listdir(source_dir)
+    dfs = []
+    for f in files:
+        dfs.append(read_json(os.path.join(source_dir, f)))
+    json_df = pd.concat(dfs)
     dedup_df = remove_duplicates(json_df)
-    write_parquet(dedup_df, target)
+    write_parquet(dedup_df, target_file)
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source_directory", help="directory to the json files to process")
+    parser.add_argument("target_directory", help="parquet output directory")
+    parser.add_argument("target_file", help="parquet output filename")
+    args = parser.parse_args()
+
+    target_file = os.path.join(args.target_directory, args.target_file)
+    process_multiple_files(args.source_directory, target_file)    
 
 
 

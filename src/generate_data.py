@@ -4,7 +4,8 @@
 # Desc:   generate data for load testing of json_to_parquet.py
 
 
-import random, datetime, string, json
+import os, random, datetime, string, json, argparse
+
 
 def make_id():
     return f'{random.randrange(1,99999):05}'
@@ -73,5 +74,35 @@ def write_json(recs, filepath):
 
 def make_json(recs):
     return json.dumps( {"records" : recs} )
+
+def write_multiple_files(basepath, num_files_to_make, num_recs_to_make, yyyy, mm, dd, number_of_days=1, num_dups_to_add=0):
+    os.mkdir(basepath)
+    # we have to run make_recs all at once to avoid accidental dups across files
+    all_recs = make_recs(num_recs_to_make * num_files_to_make, yyyy, mm, dd, number_of_days)
+    for i in range(num_files_to_make):
+        recs = all_recs[num_recs_to_make * i:num_recs_to_make * (i+1)]
+        recs_with_dups = add_dups_to_recs(recs, num_dups_to_add)
+        filename = os.path.join(basepath, f'file_{i+1:04}.json')
+        # print(filename)
+        write_json(recs_with_dups, filename)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("directory", help="directory in which to create data subdirectory - subdirectory will be created here")
+    parser.add_argument("number_of_recs_per_file", help="the number of records total in all data files", type=int)
+    parser.add_argument("number_of_files", help="the number of files (max of 9999) ", type=int)
+    parser.add_argument("date", help="the date for the ts value as yyyymmdd")
+    parser.add_argument("-x", "--number_of_additional_duplicates", help="the number of duplicates to include in addition to number-of-recs", default=0)
+    parser.add_argument("-nd", "--number_of_days", help="the number of days in the future to include in possible ts values (default 1 - same day as date", default=1)
+    args = parser.parse_args()
+
+    if args.directory:
+        sub_name = f'jtp_data_{args.number_of_recs_per_file}_by_{args.number_of_files}'
+        yyyymmdd = args.date
+        yyyy, mm, dd = int(yyyymmdd[:4]), int(yyyymmdd[4:6]), int(yyyymmdd[6:])
+        write_multiple_files(args.directory, args.number_of_files, args.number_of_recs_per_file, yyyy, mm, dd, args.number_of_days)
+    
+    
+
 
 

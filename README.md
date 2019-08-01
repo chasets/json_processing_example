@@ -72,13 +72,12 @@ Let's not do any partition handling. No need to overcomplicate without knowing m
 
 ### Generative testing, add multiple file capability
 1. ~~functions to generate test data~~ 
-2. make command line util for generating test files
+2. ~~make command line util for generating test files~~
 3. ~~generate a bunch of data~~
-4. expand to use multiple files
-5. add command line capability
-6. how much data can we get in a 10 or 20 minute run
+4. ~~expand to use multiple files~~
+5. ~~add command line capability~~
 
-* tests for multiple files, analysis for dups to expect, update dup tests
+* ~~tests for multiple files, analysis for dups to expect, update dup tests~~
 * add pandasql for testing the expected state 
 
 ### Abstract and move to local Spark

@@ -6,6 +6,9 @@
 
 # TODO: move this to a pytest config; this method _requires_ that pytest be run from project root
 import sys, os, pytest 
+import os
+import pandas as pd
+
 path = os.path.join(os.getcwd(), 'src')
 sys.path.append(path)
 import generate_data, json_to_parquet
@@ -27,8 +30,6 @@ def test_read_write_simple_file():
     json_to_parquet.write_parquet(df, parquet_filepath)
 
     # get counts, compare, and clean up
-    import os
-    import pandas as pd
     parquet_recs = len(pd.read_parquet(parquet_filepath))
 
     assert parquet_recs == original_recs
@@ -52,8 +53,6 @@ def test_read_write_with_dups():
     json_to_parquet.write_parquet(df_clean, parquet_filepath)
 
     # get counts, compare, and clean up
-    import os
-    import pandas as pd
     parquet_recs = len(pd.read_parquet(parquet_filepath))
 
     assert parquet_recs == original_recs
@@ -81,11 +80,97 @@ def test_read_write_with_dups_big():
     json_to_parquet.write_parquet(df_clean, parquet_filepath)
 
     # get counts, compare, and clean up
-    import os
-    import pandas as pd
     parquet_recs = len(pd.read_parquet(parquet_filepath))
 
     assert parquet_recs == original_recs
 
-    # os.remove(json_filepath)
-    # os.remove(parquet_filepath)
+    os.remove(json_filepath)
+    os.remove(parquet_filepath)
+
+def test_read_write_multiple_files():
+    source_directory = 'data/test1'
+    target_file = 'output/test1.parquet'
+    original_recs = 1000
+    number_of_files = 100
+
+    generate_data.write_multiple_files(source_directory, number_of_files, original_recs, 2019, 1, 15)
+    json_to_parquet.process_multiple_files(source_directory, target_file)
+
+    # get counts, compare, and clean up
+    parquet_recs = len(pd.read_parquet(target_file))
+
+    assert parquet_recs == original_recs * number_of_files
+
+    files = os.listdir(source_directory)
+    for f in files:
+        os.remove(os.path.join(source_directory, f))
+    os.rmdir(source_directory)
+    os.remove(target_file)
+
+@pytest.mark.slow
+def test_read_write_multiple_files_big():
+    source_directory = 'data/test2'
+    target_file = 'output/test2.parquet'
+    original_recs = 1000
+    number_of_files = 1000
+
+    generate_data.write_multiple_files(source_directory, number_of_files, original_recs, 2019, 1, 15)
+    json_to_parquet.process_multiple_files(source_directory, target_file)
+
+    # get counts, compare, and clean up
+    parquet_recs = len(pd.read_parquet(target_file))
+
+    assert parquet_recs == original_recs * number_of_files
+
+    files = os.listdir(source_directory)
+    for f in files:
+        os.remove(os.path.join(source_directory, f))
+    os.rmdir(source_directory)
+    os.remove(target_file)
+
+def test_read_write_multiple_files_with_dups():
+    source_directory = 'data/test3'
+    target_file = 'output/test3.parquet'
+    original_recs = 1000
+    additional_recs = 250
+    number_of_files = 100
+
+    generate_data.write_multiple_files(source_directory, number_of_files, original_recs, 2019, 1, 15, num_dups_to_add=additional_recs)
+    json_to_parquet.process_multiple_files(source_directory, target_file)
+
+    # get counts, compare, and clean up
+    parquet_recs = len(pd.read_parquet(target_file))
+
+    assert parquet_recs == original_recs * number_of_files
+
+    files = os.listdir(source_directory)
+    for f in files:
+        os.remove(os.path.join(source_directory, f))
+    os.rmdir(source_directory)
+    os.remove(target_file)
+
+@pytest.mark.slow
+def test_read_write_multiple_files_with_dups_big():
+    source_directory = 'data/test3'
+    target_file = 'output/test3.parquet'
+    original_recs = 1000
+    additional_recs = 2500
+    number_of_files = 1000
+
+    generate_data.write_multiple_files(source_directory, number_of_files, original_recs, 2019, 1, 15, num_dups_to_add=additional_recs)
+    json_to_parquet.process_multiple_files(source_directory, target_file)
+
+    # get counts, compare, and clean up
+    parquet_recs = len(pd.read_parquet(target_file))
+
+    assert parquet_recs == original_recs * number_of_files
+
+    files = os.listdir(source_directory)
+    for f in files:
+        os.remove(os.path.join(source_directory, f))
+    os.rmdir(source_directory)
+    os.remove(target_file)
+
+
+
+
