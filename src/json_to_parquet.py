@@ -4,13 +4,10 @@
 # Desc:   Convert json input files to parquet. See https://github.com/chasets/json_processing_example
 
 import json
-import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import argparse, os
-
-
 
 
 def read_json(filename):
@@ -34,6 +31,7 @@ def remove_duplicates(df):
     df.reset_index(drop=True, inplace=True)
     return df
 
+
 def process_multiple_files(source_dir, target_file):
     files = os.listdir(source_dir)
     dfs = []
@@ -42,7 +40,6 @@ def process_multiple_files(source_dir, target_file):
     json_df = pd.concat(dfs)
     dedup_df = remove_duplicates(json_df)
     write_parquet(dedup_df, target_file)
-
 
 
 if __name__ == '__main__':
